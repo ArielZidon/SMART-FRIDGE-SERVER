@@ -59,9 +59,23 @@ def read_user(user_id: str, password: str):
     if user_doc.exists:
         user_data = user_doc.to_dict()
         if eq(password, user_data['password']):
-            return {user_id : "0"}
+            return {user_id: "0"}
         else:
             return {"wrong password": "1"}
+    else:
+        return {"error": "2"}
+
+
+@app.get("/admin/{admin_id}/{password}")
+def read_manager(admin_id: str, password: str):
+    user_ref = db.collection("manager_accounts").document(admin_id)
+    user_doc = user_ref.get()
+    if user_doc.exists:
+        user_data = user_doc.to_dict()
+        if eq(password, user_data['password']):
+            return {admin_id: "0"}
+        else:
+            return {"wrong admin password": "1"}
     else:
         return {"error": "2"}
 
